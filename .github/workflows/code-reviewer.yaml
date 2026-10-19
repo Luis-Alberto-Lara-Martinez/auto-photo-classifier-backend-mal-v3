@@ -1,0 +1,74 @@
+name: code-reviewer-bot
+
+on:
+  pull_request:
+    types: [ opened, reopened, ready_for_review, synchronize ]
+  issue_comment:
+    types: [ created ]
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  pr_agent_job:
+    name: run-code-review
+    runs-on: ubuntu-latest
+    if: >-
+      ${{ github.event.sender.type != 'Bot' &&
+      (github.event_name == 'pull_request' &&
+        github.event.pull_request.draft == false ||
+       github.event_name == 'issue_comment' &&
+        github.event.issue.pull_request &&
+        startsWith(github.event.comment.body, '/')) }}
+    concurrency:
+      group: pr-agent-${{ github.event.pull_request.number || github.event.issue.number }}
+      cancel-in-progress: true
+    steps:
+      - name: The PR Agent
+        uses: The-PR-Agent/pr-agent@v0.48.0
+        env:
+          CONFIG.MODEL: "gemini/gemini-3.5-flash-lite"
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_ACTION_CONFIG.AUTO_REVIEW: "true"
+          GITHUB_ACTION_CONFIG.AUTO_DESCRIBE: "true"
+          GITHUB_ACTION_CONFIG.AUTO_IMPROVE: "true"
+          GITHUB_ACTION_CONFIG.PR_ACTIONS: '["opened", "reopened", "ready_for_review", "synchronize"]'
+          PR_CODE_SUGGESTIONS.COMMITABLE_CODE_SUGGESTIONS: "true"
+          PR_REVIEWER.EXTRA_INSTRUCTIONS: |
+            You are a senior Java/Spring Boot backend engineer.
+            Review ONLY the code changed in this PR (use surrounding code only
+            as context). Do not comment on untouched code.
+
+            Check:
+            1. Security: authentication/authorization (@PreAuthorize, exposed
+               endpoints, IDOR), input validation (@Valid), injection in
+               SQL/JPQL/native queries, sensitive data in logs/responses,
+               entities returned instead of DTOs.
+            2. Correctness: logic errors, race conditions, null handling
+               (NPEs, Optional misuse), exception handling (swallowed or overly
+               broad catches, wrong HTTP status), transaction boundaries
+               (missing/misplaced @Transactional, self-invocation, readOnly,
+               lazy loading outside a transaction).
+            3. Performance: N+1 queries, missing fetch join/@EntityGraph,
+               unbounded queries without pagination, missing indexes for new
+               query patterns.
+            4. REST design: HTTP verbs/status codes, idempotency, backward
+               compatibility, error response format.
+            5. Maintainability: only issues with real impact (significant
+               duplication, layer responsibilities, missing tests for new
+               critical logic).
+
+            Rules:
+            - Report only issues you can point to in the diff, with file/line
+              and the concrete scenario in which it fails.
+            - Do NOT report speculative issues, style preferences, naming or
+              formatting as bugs. Label pure suggestions as suggestions.
+            - If unsure, omit the finding. Group similar occurrences.
+            - If there are no relevant issues, say so briefly. Do not invent
+              findings.
+          PR_CODE_SUGGESTIONS.EXTRA_INSTRUCTIONS: |
+            Focus on Java/Spring Boot: security, correctness, transactions,
+            N+1 queries and null handling.
