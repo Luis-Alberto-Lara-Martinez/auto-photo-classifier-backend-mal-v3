@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>4.1.1</version>
+        <relativePath/>
+    </parent>
+    <groupId>com.autophotoclassifier</groupId>
+    <artifactId>backend</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>Auto Photo Classifier Backend</name>
+    <description>Api rest for Auto Photo Classifier app made with Spring Boot 4.1.1 and Java 25</description>
+    <url>https://github.com/Luis-Alberto-Lara-Martinez/auto-photo-classifier-backend.git</url>
+    <licenses>
+        <license>
+            <name>All rights reserved</name>
+            <distribution>manual</distribution>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>Luis Alberto Lara Martínez</name>
+            <email>luisalbertolaramartinez3c@gmail.com</email>
+            <url>https://github.com/Luis-Alberto-Lara-Martinez</url>
+        </developer>
+    </developers>
+    <scm>
+        <connection>scm:git:https://github.com/Luis-Alberto-Lara-Martinez/auto-photo-classifier-backend.git</connection>
+        <developerConnection>scm:git:https://github.com/Luis-Alberto-Lara-Martinez/auto-photo-classifier-backend.git
+        </developerConnection>
+        <tag>HEAD</tag>
+        <url>https://github.com/Luis-Alberto-Lara-Martinez/auto-photo-classifier-backend</url>
+    </scm>
+    <properties>
+        <java.version>25</java.version>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>
