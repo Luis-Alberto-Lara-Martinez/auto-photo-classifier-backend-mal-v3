@@ -1,0 +1,31 @@
+cookie:
+  long-duration: 30d
+  short-duration: 15m
+encryption:
+  active-key: ${ENCRYPTION_ACTIVE_KEY}
+  keys:
+    v1: ${ENCRYPTION_KEYS_V1}
+frontend:
+  base-url: ${FRONTEND_BASE_URL}
+google:
+  client-id: ${GOOGLE_CLIENT_ID}
+  client-secret: ${GOOGLE_CLIENT_SECRET}
+  sign-in-redirect-uri: ${GOOGLE_SIGN_IN_REDIRECT_URI}
+  picker-redirect-uri: ${GOOGLE_PICKER_REDIRECT_URI}
+jwt:
+  audience: ${JWT_AUDIENCE}
+  duration: 15m
+  issuer: ${JWT_ISSUER}
+  secret: ${JWT_SECRET}
+logging:
+  level:
+    com.autophotoclassifier: info
+    root: warn
+spring:
+  datasource:
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+  jpa:
+    hibernate:
+      ddl-auto: validate
