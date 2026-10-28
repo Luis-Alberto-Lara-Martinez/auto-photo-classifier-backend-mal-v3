@@ -21,7 +21,7 @@ public record FrontendProperty(
                     uri.getUserInfo() == null &&
                     uri.getQuery() == null &&
                     uri.getFragment() == null &&
-                    uri.getPath() == null;
+                    (uri.getPath() == null || uri.getPath().isBlank() || "/".equals(uri.getPath()));
         } catch (IllegalArgumentException _) {
             return false;
         }

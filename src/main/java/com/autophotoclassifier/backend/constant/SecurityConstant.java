@@ -11,7 +11,8 @@ public class SecurityConstant {
             "/google/picker/authorize",
             "/google/picker/callback",
             "/auth/refresh",
-            "/auth/logout"
+            "/auth/logout",
+            "/prueba/saludo"
     );
 
     private SecurityConstant() {
